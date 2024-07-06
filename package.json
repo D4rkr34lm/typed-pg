@@ -1,0 +1,16 @@
+{
+  "name": "typed-pg",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "A wrapper for postrges, providing end-to-end type safety",
+  "devDependencies": {
+    "eslint": "^9.5.0",
+    "neverthrow": "^6.2.2",
+    "prettier": "^3.3.2"
+  }
+}
