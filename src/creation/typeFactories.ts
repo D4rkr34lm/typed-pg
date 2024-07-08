@@ -1,7 +1,7 @@
 import { isBoolean, isNull, isNumber, isString, toNumber } from "lodash";
 import * as moment from "moment";
 
-function noTransform<T>(value: T): T {
+function noTransform<T>(value: T | null): T | null {
   return value;
 }
 
@@ -45,7 +45,7 @@ export function text() {
 export function boolean() {
   return {
     type: "BOOLEAN" as const,
-    validator: (value: unknown): value is boolean | number => {
+    validator: (value: unknown): value is boolean | null => {
       return isNull(value) || isBoolean(value);
     },
     fromDB: (value: any): boolean => {
@@ -58,8 +58,8 @@ export function boolean() {
 export function timestamp() {
   return {
     type: "TIMESTAMPTZ" as const,
-    validator: (value: unknown): value is Date => {
-      return isString(value) && moment(value).isValid();
+    validator: (value: unknown): value is Date | null => {
+      return isNull(value) || (isString(value) && moment(value).isValid());
     },
     fromDB: (value: any) => {
       return new Date(value);
