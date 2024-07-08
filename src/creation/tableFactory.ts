@@ -9,8 +9,8 @@ interface TableFactoryColumn {
 }
 
 export class TableFactory {
-  columns: TableFactoryColumn[] = [];
-  name: string;
+  private columns: TableFactoryColumn[] = [];
+  private name: string;
 
   constructor(name: string) {
     this.name = name;
@@ -22,13 +22,13 @@ export class TableFactory {
 
   generateSQL(): string {
     function columnModifiersToSql(modifiers: DBColumnModifier[]): string {
-      return map(modifiers, (modifier) => modifier.name).join(" ");
+      return modifiers.length === 0 ? "" : " " + map(modifiers, (modifier) => modifier.name).join(" ");
     }
 
     function columnToSql(column: TableFactoryColumn): string {
-      return `  ${column.name} ${column.type.name} ${columnModifiersToSql(column.modifiers)}, \n`;
+      return `  ${column.name} ${column.type.name}${columnModifiersToSql(column.modifiers)}`;
     }
 
-    return `CREATE TABLE ${this.name} { \n${map(this.columns, columnToSql).join("")}}`;
+    return `CREATE TABLE ${this.name} {\n${map(this.columns, columnToSql).join(",\n")}\n};`;
   }
 }

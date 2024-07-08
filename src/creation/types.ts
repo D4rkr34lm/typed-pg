@@ -22,7 +22,7 @@ export function varChar(length: number) {
   }
 
   return {
-    name: `VARCHAR${length}` as const,
+    name: `VARCHAR(${length})` as const,
     validator: (value: unknown): value is string | null => {
       return isNull(value) || (isString(value) && value.length >= 0 && value.length < length);
     },
