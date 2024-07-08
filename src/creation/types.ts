@@ -7,7 +7,7 @@ function noTransform<T>(value: T | null): T | null {
 
 export function number() {
   return {
-    type: "DOUBLE" as const,
+    name: "DOUBLE" as const,
     validator: (value: unknown): value is number | null => {
       return isNull(value) || isNumber(value);
     },
@@ -22,7 +22,7 @@ export function varChar(length: number) {
   }
 
   return {
-    type: `VARCHAR${length}` as const,
+    name: `VARCHAR${length}` as const,
     validator: (value: unknown): value is string | null => {
       return isNull(value) || (isString(value) && value.length >= 0 && value.length < length);
     },
@@ -33,7 +33,7 @@ export function varChar(length: number) {
 
 export function text() {
   return {
-    type: "TEXT" as const,
+    name: "TEXT" as const,
     validator: (value: unknown): value is string | null => {
       return isNull(value) || isString(value);
     },
@@ -44,7 +44,7 @@ export function text() {
 
 export function boolean() {
   return {
-    type: "BOOLEAN" as const,
+    name: "BOOLEAN" as const,
     validator: (value: unknown): value is boolean | null => {
       return isNull(value) || isBoolean(value);
     },
@@ -57,7 +57,7 @@ export function boolean() {
 
 export function timestamp() {
   return {
-    type: "TIMESTAMPTZ" as const,
+    name: "TIMESTAMPTZ" as const,
     validator: (value: unknown): value is Date | null => {
       return isNull(value) || (isString(value) && moment(value).isValid());
     },
@@ -70,13 +70,13 @@ export function timestamp() {
   };
 }
 
-export const DBTypeFactories = {
-  number: number,
-  varChar: varChar,
-  text: text,
-  boolean: boolean,
-  timestamp: timestamp,
+export const DBTypes = {
+  number,
+  varChar,
+  text,
+  boolean,
+  timestamp,
 };
 
-export type DBTypeName = keyof typeof DBTypeFactories;
-export type DBTypeFactory = (typeof DBTypeFactories)[DBTypeName];
+export type DBTypeName = keyof typeof DBTypes;
+export type DBType = ReturnType<(typeof DBTypes)[DBTypeName]>;
