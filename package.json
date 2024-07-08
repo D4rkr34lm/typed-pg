@@ -9,8 +9,16 @@
   "license": "MIT",
   "description": "A wrapper for postrges, providing end-to-end type safety",
   "devDependencies": {
+    "@types/lodash": "^4.17.6",
+    "@types/moment": "^2.13.0",
+    "@types/pg": "^8.11.6",
     "eslint": "^9.5.0",
     "neverthrow": "^6.2.2",
     "prettier": "^3.3.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1",
+    "pg": "^8.12.0"
   }
 }
