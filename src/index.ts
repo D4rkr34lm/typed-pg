@@ -13,14 +13,16 @@ export interface PoolSettings {
 }
 
 async function initDB(
-  factory: Database<any, any>,
+  databaseObject: Database<any, any>,
   credentials: DBCredentials,
   poolSettings: PoolSettings,
-  logger?: (...message: string[]) => void,
+  logger: (...message: string[]) => void = (...message) => {},
 ) {
-  const pool = new Pool({ ...credentials, ...poolSettings });
-  const createQuerry = factory.generateSQL();
+  const pool = new Pool({ ...credentials, ...poolSettings, log: logger });
+  const createQuerry = databaseObject.generateSQL();
   await pool.query(createQuerry).catch(() => {
+    logger("Failed to init DB");
     throw "Failed to init DB";
   });
+  logger("Database has been initialized");
 }

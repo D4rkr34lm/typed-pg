@@ -1,6 +1,7 @@
 import { map } from "lodash";
 import { Column } from "./column";
 import { DBColumnModifier } from "./columnModifiers";
+import { DBType } from "./types";
 
 export class Table<N extends string, C extends { [K in keyof C]: Column<Extract<keyof C, string>, any, any> }> {
   name: N;
@@ -16,7 +17,7 @@ export class Table<N extends string, C extends { [K in keyof C]: Column<Extract<
       return modifiers.length === 0 ? "" : " " + map(modifiers, (modifier) => modifier.name).join(" ");
     }
 
-    function columnToSql(column: any): string {
+    function columnToSql(column: Column<string, DBType, DBColumnModifier[]>): string {
       return `  ${column.name} ${column.type.name}${columnModifiersToSql(column.modifiers)}`;
     }
 
