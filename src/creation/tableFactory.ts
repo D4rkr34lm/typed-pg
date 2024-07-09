@@ -29,6 +29,6 @@ export class TableFactory {
       return `  ${column.name} ${column.type.name}${columnModifiersToSql(column.modifiers)}`;
     }
 
-    return `CREATE TABLE ${this.name} {\n${map(this.columns, columnToSql).join(",\n")}\n};`;
+    return `CREATE TABLE IF NOT EXISTS ${this.name} {\n${map(this.columns, columnToSql).join(",\n")}\n};`;
   }
 }

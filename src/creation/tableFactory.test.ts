@@ -4,7 +4,7 @@ import { boolean, number, text, timestamp, varChar } from "./types";
 
 describe("Table Factory correctly generates SQL statements", () => {
   test("Generating works", () => {
-    const should = `CREATE TABLE test {\n  column1 TEXT\n};`;
+    const should = `CREATE TABLE IF NOT EXISTS test {\n  column1 TEXT\n};`;
 
     const factory = new TableFactory("test");
     factory.createColumn("column1", text());
@@ -14,7 +14,7 @@ describe("Table Factory correctly generates SQL statements", () => {
   });
 
   test("Generating works for all types", () => {
-    const should = `CREATE TABLE test {\n  column1 TEXT,\n  column2 DOUBLE,\n  column3 VARCHAR(10),\n  column4 BOOLEAN,\n  column5 TIMESTAMPTZ\n};`;
+    const should = `CREATE TABLE IF NOT EXISTS test {\n  column1 TEXT,\n  column2 DOUBLE,\n  column3 VARCHAR(10),\n  column4 BOOLEAN,\n  column5 TIMESTAMPTZ\n};`;
 
     const factory = new TableFactory("test");
     factory.createColumn("column1", text());
@@ -28,7 +28,7 @@ describe("Table Factory correctly generates SQL statements", () => {
   });
 
   test("Generating of modified columns work", () => {
-    const should = `CREATE TABLE test {\n  column1 TEXT NOT NULL\n};`;
+    const should = `CREATE TABLE IF NOT EXISTS test {\n  column1 TEXT NOT NULL\n};`;
 
     const factory = new TableFactory("test");
     factory.createColumn("column1", text(), notNull());
