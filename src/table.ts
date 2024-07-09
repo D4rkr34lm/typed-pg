@@ -1,23 +1,14 @@
 import { map } from "lodash";
+import { Column } from "./column";
 import { DBColumnModifier } from "./columnModifiers";
-import { DBType } from "./types";
 
-interface TableFactoryColumn {
-  name: string;
-  type: DBType;
-  modifiers: DBColumnModifier[];
-}
+export class Table<N extends string, C extends { [K in keyof C]: Column<Extract<keyof C, string>, any, any> }> {
+  name: N;
+  columns: C;
 
-export class TableFactory {
-  private columns: TableFactoryColumn[] = [];
-  private name: string;
-
-  constructor(name: string) {
+  constructor(name: N, columns: C) {
     this.name = name;
-  }
-
-  createColumn(name: string, type: DBType, ...columnModifiers: DBColumnModifier[]) {
-    this.columns.push({ name, type, modifiers: columnModifiers });
+    this.columns = columns;
   }
 
   generateSQL(): string {
@@ -25,7 +16,7 @@ export class TableFactory {
       return modifiers.length === 0 ? "" : " " + map(modifiers, (modifier) => modifier.name).join(" ");
     }
 
-    function columnToSql(column: TableFactoryColumn): string {
+    function columnToSql(column: any): string {
       return `  ${column.name} ${column.type.name}${columnModifiersToSql(column.modifiers)}`;
     }
 

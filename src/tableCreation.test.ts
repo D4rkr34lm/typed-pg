@@ -1,14 +1,19 @@
+import { Column } from "./column";
 import { notNull } from "./columnModifiers";
-import { TableFactory } from "./tableFactory";
+import { Table } from "./table";
 import { boolean, number, text, timestamp, varChar } from "./types";
 
 describe("Table Factory correctly generates SQL statements", () => {
   test("Generating works", () => {
     const should = `CREATE TABLE IF NOT EXISTS test {\n  column1 TEXT\n};`;
 
-    const factory = new TableFactory("test");
-    factory.createColumn("column1", text());
-    const is = factory.generateSQL();
+    const table = new Table("test", {
+      column1: new Column("column1", text()),
+    });
+
+    console.log(table);
+
+    const is = table.generateSQL();
 
     expect(is).toEqual(should);
   });
@@ -16,13 +21,14 @@ describe("Table Factory correctly generates SQL statements", () => {
   test("Generating works for all types", () => {
     const should = `CREATE TABLE IF NOT EXISTS test {\n  column1 TEXT,\n  column2 DOUBLE,\n  column3 VARCHAR(10),\n  column4 BOOLEAN,\n  column5 TIMESTAMPTZ\n};`;
 
-    const factory = new TableFactory("test");
-    factory.createColumn("column1", text());
-    factory.createColumn("column2", number());
-    factory.createColumn("column3", varChar(10));
-    factory.createColumn("column4", boolean());
-    factory.createColumn("column5", timestamp());
-    const is = factory.generateSQL();
+    const table = new Table("test", {
+      column1: new Column("column1", text()),
+      column2: new Column("column2", number()),
+      column3: new Column("column3", varChar(10)),
+      column4: new Column("column4", boolean()),
+      column5: new Column("column5", timestamp()),
+    });
+    const is = table.generateSQL();
 
     expect(is).toEqual(should);
   });
@@ -30,9 +36,10 @@ describe("Table Factory correctly generates SQL statements", () => {
   test("Generating of modified columns work", () => {
     const should = `CREATE TABLE IF NOT EXISTS test {\n  column1 TEXT NOT NULL\n};`;
 
-    const factory = new TableFactory("test");
-    factory.createColumn("column1", text(), notNull());
-    const is = factory.generateSQL();
+    const table = new Table("test", {
+      column1: new Column("column1", text(), notNull()),
+    });
+    const is = table.generateSQL();
 
     expect(is).toEqual(should);
   });

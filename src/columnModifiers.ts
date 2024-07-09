@@ -2,7 +2,7 @@ import { isNull } from "lodash";
 
 export function notNull() {
   return {
-    name: "NOT NULL",
+    name: "NOT NULL" as const,
     modifyFromDB: <T>(value: T | null): T => {
       if (isNull(value)) {
         throw "Database integrity has been lost! A column specified as NOT NULL contains null";
