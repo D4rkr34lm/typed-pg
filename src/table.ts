@@ -4,8 +4,8 @@ import { DBColumnModifier } from "./columnModifiers";
 import { DBType } from "./types";
 
 export class Table<N extends string, C extends { [K in keyof C]: Column<Extract<keyof C, string>, any, any> }> {
-  name: N;
-  columns: C;
+  readonly name: N;
+  readonly columns: C;
 
   constructor(name: N, columns: C) {
     this.name = name;

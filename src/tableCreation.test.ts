@@ -11,8 +11,6 @@ describe("Table Factory correctly generates SQL statements", () => {
       column1: new Column("column1", text()),
     });
 
-    console.log(table);
-
     const is = table.generateSQL();
 
     expect(is).toEqual(should);

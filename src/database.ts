@@ -2,8 +2,8 @@ import { map } from "lodash";
 import { Table } from "./table";
 
 export class Database<N extends string, T extends { [K in keyof T]: Table<Extract<keyof T, string>, any> }> {
-  name: N;
-  tables: T;
+  readonly name: N;
+  readonly tables: T;
 
   constructor(name: N, tables: T) {
     this.name = name;

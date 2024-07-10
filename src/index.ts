@@ -1,5 +1,6 @@
 import { Pool } from "pg";
 import { Database } from "./database";
+import { PathLike, PathOrFileDescriptor, writeFile, writeFileSync } from "fs";
 export interface DBCredentials {
   host: string;
   port: number;
@@ -17,6 +18,7 @@ async function initDB(
   credentials: DBCredentials,
   poolSettings: PoolSettings,
   logger: (...message: string[]) => void = (...message) => {},
+  sqlOutputFolder?: PathLike,
 ) {
   const pool = new Pool({ ...credentials, ...poolSettings, log: logger });
   const createQuerry = databaseObject.generateSQL();
@@ -25,4 +27,9 @@ async function initDB(
     throw "Failed to init DB";
   });
   logger("Database has been initialized");
+  logger(createQuerry);
+
+  if (sqlOutputFolder) {
+    writeFileSync(sqlOutputFolder + "createQuerry.sql", createQuerry);
+  }
 }
