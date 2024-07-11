@@ -1,6 +1,6 @@
 import { Pool } from "pg";
 import { Database } from "./database";
-import { PathLike, PathOrFileDescriptor, writeFile, writeFileSync } from "fs";
+import { PathLike, writeFileSync } from "fs";
 export interface DBCredentials {
   host: string;
   port: number;
@@ -13,7 +13,7 @@ export interface PoolSettings {
   max: number;
 }
 
-async function initDB(
+export async function initDB(
   databaseObject: Database<any, any>,
   credentials: DBCredentials,
   poolSettings: PoolSettings,

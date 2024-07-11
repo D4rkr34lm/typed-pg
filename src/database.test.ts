@@ -3,7 +3,7 @@ import { Database } from "./database";
 import { Table } from "./table";
 import { boolean, number, text, timestamp, varChar } from "./types";
 
-describe("Database Factory correctly generates SQL statements", () => {
+describe("Database correctly generates SQL statements", () => {
   test("Generates CREATE statemens for tables", () => {
     const table1SQL = `CREATE TABLE IF NOT EXISTS test1 {\n  column1 TEXT,\n  column2 DOUBLE,\n  column3 VARCHAR(10),\n  column4 BOOLEAN,\n  column5 TIMESTAMPTZ\n};`;
     const table2SQL = `CREATE TABLE IF NOT EXISTS test2 {\n  column1 TEXT\n};`;

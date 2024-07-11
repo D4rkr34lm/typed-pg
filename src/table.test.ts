@@ -3,7 +3,7 @@ import { notNull } from "./columnModifiers";
 import { Table } from "./table";
 import { boolean, number, text, timestamp, varChar } from "./types";
 
-describe("Table Factory correctly generates SQL statements", () => {
+describe("Table correctly generates SQL statements", () => {
   test("Generating works", () => {
     const should = `CREATE TABLE IF NOT EXISTS test {\n  column1 TEXT\n};`;
 
