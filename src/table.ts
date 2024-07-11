@@ -3,11 +3,14 @@ import { Column } from "./column";
 import { DBColumnModifier } from "./columnModifiers";
 import { DBType } from "./types";
 
-export class Table<N extends string, C extends { [K in keyof C]: Column<Extract<keyof C, string>, any, any> }> {
-  readonly name: N;
-  readonly columns: C;
+export class Table<
+  Name extends string,
+  Columns extends { [K in keyof Columns]: Column<Extract<keyof Columns, string>, any, any> },
+> {
+  readonly name: Name;
+  readonly columns: Columns;
 
-  constructor(name: N, columns: C) {
+  constructor(name: Name, columns: Columns) {
     this.name = name;
     this.columns = columns;
   }
