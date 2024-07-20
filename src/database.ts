@@ -1,10 +1,7 @@
 import { map } from "lodash";
 import { Table } from "./table";
 
-export class Database<
-  Name extends string,
-  Tables extends { [K in keyof Tables]: Table<Extract<keyof Tables, string>, any> },
-> {
+export class Database<Name extends string, Tables extends { [K in keyof Tables]: Table<Extract<K, string>, any> }> {
   readonly name: Name;
   readonly tables: Tables;
 

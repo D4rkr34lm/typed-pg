@@ -5,7 +5,7 @@ import { DBType } from "./types";
 
 export class Table<
   Name extends string,
-  Columns extends { [K in keyof Columns]: Column<Extract<keyof Columns, string>, any, any> },
+  Columns extends { [K in keyof Columns]: Column<Extract<K, string>, any, any> },
 > {
   readonly name: Name;
   readonly columns: Columns;
