@@ -21,15 +21,15 @@ export async function initDB(
   sqlOutputFolder?: PathLike,
 ) {
   const pool = new Pool({ ...credentials, ...poolSettings, log: logger });
-  const createQuerry = databaseObject.generateSQL();
-  await pool.query(createQuerry).catch(() => {
+  const createQuery = databaseObject.generateSQL();
+  await pool.query(createQuery).catch(() => {
     logger("Failed to init DB");
     throw "Failed to init DB";
   });
   logger("Database has been initialized");
-  logger(createQuerry);
+  logger(createQuery);
 
   if (sqlOutputFolder) {
-    writeFileSync(sqlOutputFolder + "createQuerry.sql", createQuerry);
+    writeFileSync(sqlOutputFolder + "createQuery.sql", createQuery);
   }
 }
