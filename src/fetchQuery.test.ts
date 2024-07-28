@@ -2,6 +2,7 @@ import { Column } from "./column";
 import { Database } from "./database";
 import { Table } from "./table";
 import { number, text, varChar } from "./types";
+import { createSimpleFetchQuery } from "./index";
 
 describe("Data fetch queries correctly generate SQL", () => {
   const table1 = new Table("test1", {
@@ -16,5 +17,9 @@ describe("Data fetch queries correctly generate SQL", () => {
   const db = new Database("test", {
     test1: table1,
     test2: table2,
+  });
+
+  test("Queries can be created", () => {
+    createSimpleFetchQuery(db).from("test1").select(["age"]).where("name", "=", "'Manuel'");
   });
 });

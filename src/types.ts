@@ -1,18 +1,12 @@
 import { isBoolean, isNull, isNumber, isString, toNumber } from "lodash";
 import * as moment from "moment";
 
-function noTransform<T>(value: T | null): T | null {
-  return value;
-}
-
 export function number() {
   return {
     name: "DOUBLE" as const,
     validator: (value: unknown): value is number | null => {
       return isNull(value) || isNumber(value);
     },
-    fromDB: noTransform,
-    toDB: toNumber,
   };
 }
 
@@ -26,8 +20,6 @@ export function varChar(length: number) {
     validator: (value: unknown): value is string | null => {
       return isNull(value) || (isString(value) && value.length >= 0 && value.length < length);
     },
-    fromDB: noTransform,
-    toDB: noTransform,
   };
 }
 
@@ -37,8 +29,6 @@ export function text() {
     validator: (value: unknown): value is string | null => {
       return isNull(value) || isString(value);
     },
-    fromDB: noTransform,
-    toDB: noTransform,
   };
 }
 
@@ -48,10 +38,6 @@ export function boolean() {
     validator: (value: unknown): value is boolean | null => {
       return isNull(value) || isBoolean(value);
     },
-    fromDB: (value: any): boolean => {
-      return value as boolean;
-    },
-    toDB: noTransform,
   };
 }
 
@@ -60,12 +46,6 @@ export function timestamp() {
     name: "TIMESTAMPTZ" as const,
     validator: (value: unknown): value is Date | null => {
       return isNull(value) || (isString(value) && moment(value).isValid());
-    },
-    fromDB: (value: any) => {
-      return new Date(value);
-    },
-    toDB: (date: Date) => {
-      return date.toUTCString();
     },
   };
 }
@@ -80,3 +60,21 @@ export const DBTypes = {
 
 export type DBTypeName = keyof typeof DBTypes;
 export type DBType = ReturnType<(typeof DBTypes)[DBTypeName]>;
+
+export type ExtractApplicableOperators<Type extends DBType> = Type["name"] extends "DOUBLE" | "TIMESTAMPTZ"
+  ? ">" | "=>" | "=" | "<" | "<="
+  : Type["name"] extends `VARCHAR(${number})` | "TEXT" | "BOOLEAN"
+    ? "="
+    : never;
+
+export type ExtractType<Type extends DBType> = Type["name"] extends "DOUBLE"
+  ? number
+  : Type["name"] extends `VARCHAR(${number})` | "TEXT"
+    ? `'${string}'`
+    : Type["name"] extends "BOOLEAN"
+      ? boolean
+      : Type["name"] extends "TIMESTAMPTZ"
+        ? Date
+        : never;
+
+export type SupportedTypes = number | `'${string}'` | boolean | Date;

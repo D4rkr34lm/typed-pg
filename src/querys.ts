@@ -1,7 +1,7 @@
 import { Column } from "./column";
 import { DBColumnModifier } from "./columnModifiers";
 import { Table } from "./table";
-import { DBType } from "./types";
+import { DBType, ExtractType } from "./types";
 
 export class FetchQuery<
   FromTables extends { [K in keyof FromTables]: Table<Extract<K, string>, any> },
@@ -13,11 +13,11 @@ export class FetchQuery<
 
 export class WhereCondition<
   DataType extends DBType,
-  AColumn extends Column<string, DataType, DBColumnModifier[]>,
+  Subject extends Column<string, DataType, DBColumnModifier[]>,
   Operator,
-  BColumn extends Column<string, DataType, DBColumnModifier[]>,
+  Object extends Column<string, DataType, DBColumnModifier[]> | ExtractType<Subject["type"]>,
 > {
-  readonly a: AColumn;
+  readonly a: Subject;
   readonly operator: Operator;
-  readonly b: BColumn;
+  readonly b: Object;
 }
